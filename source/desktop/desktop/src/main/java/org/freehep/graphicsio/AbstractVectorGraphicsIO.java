@@ -922,7 +922,12 @@ public abstract class AbstractVectorGraphicsIO extends VectorGraphicsIO {
 	 */
 	@Override
 	public Shape getClip() {
-		return (userClip != null) ? new Area(untransformShape(userClip)) : null;
+		if (userClip == null) {
+			return null;
+		}
+		// untransformShape returns null if the current transform is singular
+		Shape s = untransformShape(userClip);
+		return (s != null) ? new Area(s) : null;
 	}
 
 	/**
